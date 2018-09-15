@@ -28,18 +28,18 @@ mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 //express routes
 app.get("/",function(req,res){
-    db.Article.find({},function(err,data){
-        if(err){
-            console.log(err);
-        }
-        else{
-            //console.log(data.length);
-            res.render("home",{data:data});
-        }
+    db.Article.find({})
+    .populate("comments")
+    .then(function(dbArticle){
+        res.render("home",{data:dbArticle});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.json(err);
     })
 })
 app.get("/home",function(req,res){
-    db.Article.find({saved:true})
+    db.Article.find({})
     .populate("comments")
     .then(function(dbArticle){
         res.render("home",{data:dbArticle});
