@@ -18,7 +18,14 @@ app.engine(
       extname: ".handlebars"
     })
   );
-  app.set("view engine", "handlebars");mongoose.connect("mongodb://localhost/newsScraper");
+  app.set("view engine", "handlebars");
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsScraper";
+
+// Set mongoose to leverage built in JavaScript ES6 Promises
+// Connect to the Mongo DB
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 //express routes
 app.get("/home",function(req,res){
     db.Article.find({},function(err,data){
