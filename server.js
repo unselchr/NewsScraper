@@ -28,7 +28,15 @@ mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 //express routes
 app.get("/",function(req,res){
-    res.redirect("/home");
+    db.Article.find({},function(err,data){
+        if(err){
+            console.log(err);
+        }
+        else{
+            //console.log(data.length);
+            res.render("home",{data:data});
+        }
+    })
 })
 app.get("/home",function(req,res){
     db.Article.find({},function(err,data){
