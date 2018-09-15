@@ -39,14 +39,14 @@ app.get("/",function(req,res){
     })
 })
 app.get("/home",function(req,res){
-    db.Article.find({},function(err,data){
-        if(err){
-            console.log(err);
-        }
-        else{
-            //console.log(data.length);
-            res.render("home",{data:data});
-        }
+    db.Article.find({saved:true})
+    .populate("comments")
+    .then(function(dbArticle){
+        res.render("home",{data:dbArticle});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.json(err);
     })
 })
 app.get("/saved",function(req,res){
