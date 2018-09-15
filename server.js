@@ -27,6 +27,9 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsScraper";
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 //express routes
+app.get("/",function(req,res){
+    res.redirect("/home");
+})
 app.get("/home",function(req,res){
     db.Article.find({},function(err,data){
         if(err){
